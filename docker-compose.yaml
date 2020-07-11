@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  undertaker:
+    environment:
+      TOMBS_ADDRESS: fpm:12345
+      FPM_ADDRESS: fpm:9000
+      PRELOAD_FILE: /undertaker/undertaker.php
+      HTTP_PORT: 81
+
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: CompileDaemon -build="go build -o undertaker" -command="./undertaker" -directory=/app
+    volumes:
+    - .:/app
+    ports:
+    - '8888:81'
+
+  fpm:
+    build:
+      dockerfile: Dockerfile
+      context: docker/fpm
+    environment:
+      AUTOLOAD_FILE: /project/vendor/autoload.php
+      PHP_DIR: /project/src
+    volumes:
+    - ./docker/fpm/project/:/project
+    - ./docker/fpm/undertaker/:/undertaker
+
+  nginx:
+    image: nginx:latest
+    volumes:
+    - ./docker/nginx:/etc/nginx/conf.d
+    - ./docker/fpm/project:/project
+    ports:
+    - '8080:80'
