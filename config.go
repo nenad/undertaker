@@ -25,8 +25,8 @@ var (
 	fPreload  = flag.String("file", "", "Points to the undertaker.php preload file")
 	fHTTPPort = flag.String("port", "", "Port to listen to incoming connections. Empty port will disable the HTTP server.")
 
-	fPreloadAction = flag.Bool("preload", false, "Runs preload action if specified")
-	fCollectAction = flag.Bool("collect", true, "Runs collect action if specified")
+	fPreloadAction = flag.Bool("preload", true, "Runs preload action if specified")
+	fCollectAction = flag.Bool("collect", false, "Runs collect action if specified")
 )
 
 func ParseArgs() (*Config, error) {
