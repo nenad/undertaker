@@ -19,7 +19,7 @@ class House extends Building
         $this->exteriorType = $exteriorType;
     }
 
-    function rooms(): int
+    public function rooms(): int
     {
         return $this->rooms;
     }
