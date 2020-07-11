@@ -7,12 +7,19 @@ Get rid of your old and unused PHP code.
 `undertaker` works by preloading all your classes in a given directory and then utilizes the [krakjoe/tombs](https://github.com/krakjoe/tombs)
 extension to keep track of the unused functions over time. It provides CLI and HTTP interface for querying the unused functions.
 
+## Prerequisites
+
+- PHP 7.2+
+- Target project managed by `composer`
+- PHP files specified for preloading do not have side effects when loaded. For example, defining a class and invoking
+a function at the bottom of the file.
+
 ## Setup
 
 ### Enabling tombs
 
 Make sure you have the `tombs.so` extension loaded and configured to serve the unused functions through TCP. An example
-of tombs configuration file that has TCP is:
+`tombs` configuration file that has TCP listener is:
 
 ```ini
 zend_extension=tombs.so
@@ -46,7 +53,6 @@ If you want to enable the HTTP server from `undertaker` also run it with `-port`
 Sending a request to `undertaker` to `/collect` (or running the command with `-collect` flag) will return the functions
 which have not been yet used over the lifetime of the `php-fpm` process.
 
-
 ## Example
 
 This repository comes with an example. Simply run `docker-compose up -d` and you'll have bootstrapped and preloaded
@@ -74,3 +80,10 @@ Undertaker\Dummy\Model\House::exteriorType
 Undertaker\Dummy\Model\Building::rooms
 Undertaker\Dummy\Model\InhabitableInterface::exteriorType
 ```
+
+## Future work
+
+- Collect functions over time in a persistence engine
+- Integration tests
+- Detect files which might have side effects when loaded
+- Running in production...
