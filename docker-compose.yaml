@@ -25,7 +25,7 @@ services:
       PHP_DIR: /project/src
     volumes:
     - ./docker/fpm/project/:/project
-    - ./docker/fpm/undertaker/:/undertaker
+    - ./preloader/:/undertaker
 
   nginx:
     image: nginx:latest

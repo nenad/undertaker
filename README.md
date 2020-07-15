@@ -35,7 +35,7 @@ if it is not enabled.
 
 ### Setting up preloader
 
-Put the `docker/fpm/undertaker/undertaker.php` somewhere on the disk where your FPM process resides and make sure it's
+Put the `preloader/undertaker.php` file somewhere on the disk where your `php-fpm` process runs and make sure it's
 readable by the FPM process. Usually FPM master process runs as root, so in most cases this will work out of the box.
 
 ### Run undertaker
