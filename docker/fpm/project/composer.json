@@ -3,7 +3,8 @@
     "description": "Dummy project to test Tombs with undertaker",
     "type": "project",
     "require": {
-        "ramsey/uuid": "^4.0"
+        "ramsey/uuid": "^4.0",
+        "nenad.dev/undertaker": "^0.0.1"
     },
     "autoload": {
         "psr-4": {
