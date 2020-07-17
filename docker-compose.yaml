@@ -10,7 +10,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-    command: CompileDaemon -build="go build -o undertaker" -command="./undertaker" -directory=/app
+    command: CompileDaemon -build="go build -o undertaker /app/cmd/undertaker" -command="./undertaker" -directory=/app
     volumes:
     - .:/app
     ports:

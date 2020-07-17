@@ -1,12 +1,14 @@
-package main
+package server
 
 import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/nenad/undertaker/internal/loader"
 )
 
-func NewServer(undertaker Undertaker, port string) http.Server {
+func NewServer(undertaker loader.Undertaker, port string) http.Server {
 	preloadHandler := &preloadHandler{undertaker: undertaker}
 	collectHandler := &collectHandler{undertaker: undertaker}
 
@@ -25,7 +27,7 @@ func NewServer(undertaker Undertaker, port string) http.Server {
 }
 
 type preloadHandler struct {
-	undertaker Undertaker
+	undertaker loader.Undertaker
 }
 
 func (h *preloadHandler) ServeHTTP(w http.ResponseWriter, _ *http.Request) {
@@ -40,7 +42,7 @@ func (h *preloadHandler) ServeHTTP(w http.ResponseWriter, _ *http.Request) {
 }
 
 type collectHandler struct {
-	undertaker Undertaker
+	undertaker loader.Undertaker
 }
 
 func (h *collectHandler) ServeHTTP(w http.ResponseWriter, _ *http.Request) {
