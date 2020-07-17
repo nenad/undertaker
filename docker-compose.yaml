@@ -4,7 +4,7 @@ services:
     environment:
       TOMBS_ADDRESS: fpm:12345
       FPM_ADDRESS: fpm:9000
-      PRELOAD_FILE: /undertaker/undertaker.php
+      PRELOAD_FILE: /project/public/undertaker.php
       HTTP_PORT: 81
 
     build:
@@ -20,12 +20,8 @@ services:
     build:
       dockerfile: Dockerfile
       context: docker/fpm
-    environment:
-      AUTOLOAD_FILE: /project/vendor/autoload.php
-      PHP_DIR: /project/src
     volumes:
     - ./docker/fpm/project/:/project
-    - ./preloader/:/undertaker
 
   nginx:
     image: nginx:latest
