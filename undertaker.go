@@ -33,7 +33,7 @@ func (u *Undertaker) Preload() error {
 		return fmt.Errorf("could not read body: %w", err)
 	}
 
-	if resp.Code > 200 {
+	if len(b) != 0 {
 		return fmt.Errorf("error while executing preloader: %s", b)
 	}
 
