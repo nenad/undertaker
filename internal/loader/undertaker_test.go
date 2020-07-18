@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/http"
 	"net/http/fcgi"
+	"reflect"
 	"testing"
 	"time"
 
@@ -71,5 +72,37 @@ func TestUndertaker_Preload(t *testing.T) {
 				t.Errorf("error expectation failed; want %q got %q", tt.err, err)
 			}
 		})
+	}
+}
+
+func TestUndertaker_Collect(t *testing.T) {
+	srv, err := net.Listen("tcp", "127.0.0.1:")
+	if err != nil {
+		t.Error(err)
+	}
+
+	go func() {
+		c, err := srv.Accept()
+		if err != nil {
+			t.Error(err)
+		}
+		_, _ = c.Write([]byte("hello\nworld"))
+		_ = c.Close()
+	}()
+
+	u := loader.Undertaker{TombsAddress: srv.Addr().String()}
+
+	str, err := u.Collect()
+	if err != nil {
+		t.Error(err)
+	}
+
+	expect := []string{
+		"hello",
+		"world",
+	}
+
+	if !reflect.DeepEqual(expect, str) {
+		t.Errorf("collected functions are not equal; got %#v want %#v", str, expect)
 	}
 }
