@@ -33,10 +33,14 @@ tombs.namespace=Undertaker
 *Note*: You will also have to have `opcache` enabled as there is a bug in the `tombs` extension which duplicates functions
 if it is not enabled.
 
-### Setting up preloader
+### Setting up the PHP preloader
 
-Put the `preloader/undertaker.php` file somewhere on the disk where your `php-fpm` process runs and make sure it's
-readable by the FPM process. Usually FPM master process runs as root, so in most cases this will work out of the box.
+1. Require `nenad.dev/undertaker` in your `composer.json` file.
+1. Create a [preloading file](https://github.com/nenad/undertaker-php/blob/master/preloader.php) on the target system.
+
+The preloading file must be accessible by the `php-fpm` process, so make sure it's on the same system. You can modify
+this file to load any directories you want by calling the `Preloader::load` method on all the directories you want to
+preload.
 
 ### Run undertaker
 
