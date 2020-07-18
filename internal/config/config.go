@@ -30,6 +30,7 @@ var (
 )
 
 func ParseArgs() (*Config, error) {
+	flag.Parse()
 	tombsAddr, err := merge(fTombs, "TOMBS_ADDRESS")
 	if err != nil {
 		return nil, fmt.Errorf("tombs address not provided")
