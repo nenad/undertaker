@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/nenad/undertaker/internal/config"
-	"github.com/nenad/undertaker/internal/database"
 	"github.com/nenad/undertaker/internal/loader"
 	"github.com/nenad/undertaker/internal/server"
 )
@@ -42,20 +41,6 @@ func main() {
 		}
 
 		fmt.Println(strings.Join(funcs, "\n"))
-	}
-
-	if cfg.Store != "" {
-		c, err := database.NewPostgres(cfg.Store, "__undertaker")
-		if err != nil {
-			log.Fatalf("could not init postgres: %s", err)
-		}
-
-		if err := c.Store([]string{
-			"test3",
-			"test1",
-		}); err != nil {
-			log.Fatalf("could not store dump: %s", err)
-		}
 	}
 
 	if cfg.HTTPPort != "" {
