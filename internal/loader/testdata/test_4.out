@@ -1,0 +1,9 @@
+Undertaker\Dummy\Model\Motel::__construct
+Undertaker\Dummy\Model\Motel::__destruct
+Undertaker\Dummy\Model\Hotel::__construct
+Undertaker\Dummy\Model\Hotel::__destruct
+Undertaker\Dummy\Model\Building::__construct
+Undertaker\Dummy\Domain\House::__construct
+Undertaker\Dummy\Domain\House::__destruct
+Undertaker\Dummy\Domain\Hotel::__construct
+Undertaker\Dummy\Domain\Hotel::__destruct

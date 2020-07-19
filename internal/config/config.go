@@ -16,6 +16,9 @@ type (
 
 		Preload bool
 		Collect bool
+
+		Store string
+		Table string
 	}
 )
 
@@ -24,6 +27,8 @@ var (
 	fFPM      = flag.String("fpm", "", "Points to the FPM tcp address")
 	fPreload  = flag.String("file", "", "Points to the undertaker.php preload file")
 	fHTTPPort = flag.String("port", "", "Port to listen to incoming connections. Empty port will disable the HTTP server.")
+	fStorage  = flag.String("storage", "", "Bury the collected dump to the provided storage DSN")
+	fTable    = flag.String("table", "", "Table for the storage")
 
 	fPreloadAction = flag.Bool("preload", true, "Runs preload action if specified")
 	fCollectAction = flag.Bool("collect", false, "Runs collect action if specified")
@@ -46,6 +51,9 @@ func ParseArgs() (*Config, error) {
 
 	port, _ := merge(fHTTPPort, "HTTP_PORT")
 
+	store, _ := merge(fStorage, "STORAGE_DSN")
+	table, _ := merge(fTable, "STORAGE_TABLE")
+
 	c := &Config{
 		TombsAddress: tombsAddr,
 		FPMAddress:   fpmAddr,
@@ -53,6 +61,8 @@ func ParseArgs() (*Config, error) {
 		HTTPPort:     port,
 		Collect:      *fCollectAction,
 		Preload:      *fPreloadAction,
+		Store:        store,
+		Table:        table,
 	}
 
 	return c, nil

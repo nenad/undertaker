@@ -30,6 +30,15 @@ func main() {
 		PreloadFile:  cfg.PreloadFile,
 	}
 
+	if cfg.Store != "" {
+		c, err := storage.NewPostgres(cfg.Store, cfg.Table)
+		if err != nil {
+			log.Fatalf("could not init postgres: %s", err)
+		}
+
+		undertaker.Gravedigger = c
+	}
+
 	if cfg.Preload {
 		if err := undertaker.Preload(); err != nil {
 			log.Fatalf("could not run preload: %s", err)
