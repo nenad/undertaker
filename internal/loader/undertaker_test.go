@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/nenad/undertaker/internal/loader"
+	"github.com/nenad/undertaker/internal/storage"
 )
 
 func TestUndertaker_Preload(t *testing.T) {
@@ -26,7 +27,7 @@ func TestUndertaker_Preload(t *testing.T) {
 		{
 			name:    "Failed preload when something is echoed",
 			message: "Should fail here",
-			err:     fmt.Errorf("error while executing preloader: Should fail here"),
+			err:     fmt.Errorf("error while executing preloader: PHP output: Should fail here"),
 		},
 	}
 
@@ -52,6 +53,7 @@ func TestUndertaker_Preload(t *testing.T) {
 			}()
 
 			u := loader.Undertaker{
+				Gravedigger:  &storage.NoopGravedigger{},
 				FPMAddr:      listener.Addr().String(),
 				TombsAddress: listener.Addr().String(),
 				PreloadFile:  preloadFile,
@@ -90,7 +92,10 @@ func TestUndertaker_Collect(t *testing.T) {
 		_ = c.Close()
 	}()
 
-	u := loader.Undertaker{TombsAddress: srv.Addr().String()}
+	u := loader.Undertaker{
+		Gravedigger:  &storage.NoopGravedigger{},
+		TombsAddress: srv.Addr().String(),
+	}
 
 	str, err := u.Collect()
 	if err != nil {

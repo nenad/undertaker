@@ -8,10 +8,12 @@ import (
 	"net/http/httptest"
 	"strings"
 
+	"github.com/nenad/undertaker/internal/storage"
 	"github.com/yookoala/gofast"
 )
 
 type Undertaker struct {
+	storage.Gravedigger
 	FPMAddr      string
 	TombsAddress string
 	PreloadFile  string
@@ -34,7 +36,7 @@ func (u *Undertaker) Preload() error {
 	}
 
 	if len(b) != 0 {
-		return fmt.Errorf("error while executing preloader: %s", b)
+		return fmt.Errorf("error while executing preloader: PHP output: %s", b)
 	}
 
 	return nil
@@ -50,5 +52,10 @@ func (u *Undertaker) Collect() ([]string, error) {
 		return nil, fmt.Errorf("could not read bytes from tombs: %w", err)
 	}
 
-	return strings.Split(strings.TrimSpace(string(b)), "\n"), nil
+	funcs := strings.Split(strings.TrimSpace(string(b)), "\n")
+	if err := u.Bury(funcs); err != nil {
+		return nil, fmt.Errorf("could not bury tombs: %w", err)
+	}
+
+	return u.Dig()
 }
