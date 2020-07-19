@@ -1,2 +1,3 @@
 vendor
-./undertaker
+undertaker
+!undertaker/
