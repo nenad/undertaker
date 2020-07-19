@@ -13,6 +13,7 @@ import (
 	"github.com/nenad/undertaker/internal/config"
 	"github.com/nenad/undertaker/internal/loader"
 	"github.com/nenad/undertaker/internal/server"
+	"github.com/nenad/undertaker/internal/storage"
 )
 
 func main() {
@@ -23,6 +24,7 @@ func main() {
 	}
 
 	undertaker := loader.Undertaker{
+		Gravedigger:  &storage.NoopGravedigger{},
 		FPMAddr:      cfg.FPMAddress,
 		TombsAddress: cfg.TombsAddress,
 		PreloadFile:  cfg.PreloadFile,
@@ -39,7 +41,6 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not run collect: %s", err)
 		}
-
 		fmt.Println(strings.Join(funcs, "\n"))
 	}
 
