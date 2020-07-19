@@ -6,27 +6,42 @@ services:
       FPM_ADDRESS: fpm:9000
       PRELOAD_FILE: /project/public/undertaker.php
       HTTP_PORT: 81
+      STORAGE_DSN: "postgres://undertaker:undertaker@postgres/undertaker?sslmode=disable"
+      STORAGE_TABLE: "public.__undertaker"
+      # The initialization scripts create a "test" schema
+      TEST_STORAGE_DSN: "postgres://undertaker:undertaker@postgres/undertaker?sslmode=disable"
 
     build:
       dockerfile: Dockerfile
       context: .
     command: CompileDaemon -build="go build -o undertaker /app/cmd/undertaker" -command="./undertaker" -directory=/app
     volumes:
-    - .:/app
+      - .:/app
     ports:
-    - '8888:81'
+      - '8888:81'
 
   fpm:
     build:
       dockerfile: Dockerfile
       context: docker/fpm
     volumes:
-    - ./docker/fpm/project/:/project
+      - ./docker/fpm/project/:/project
 
   nginx:
     image: nginx:latest
     volumes:
-    - ./docker/nginx:/etc/nginx/conf.d
-    - ./docker/fpm/project:/project
+      - ./docker/nginx:/etc/nginx/conf.d
+      - ./docker/fpm/project:/project
     ports:
-    - '8080:80'
+      - '8080:80'
+
+  postgres:
+    image: postgres:12-alpine
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_PASSWORD: undertaker
+      POSTGRES_USER: undertaker
+      POSTGRES_DB: undertaker
+    volumes:
+    - ./docker/postgres:/docker-entrypoint-initdb.d

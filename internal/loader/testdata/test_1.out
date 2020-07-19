@@ -1,0 +1,4 @@
+Undertaker\Dummy\Model\House::exteriorType
+Undertaker\Dummy\Model\Building::rooms
+Undertaker\Dummy\Model\InhabitableInterface::exteriorType
+Undertaker\Dummy\Calculator\PriceCalculator::total
