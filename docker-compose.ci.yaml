@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  undertaker:
+    environment:
+      STORAGE_DSN: "postgres://undertaker:undertaker@postgres/undertaker?sslmode=disable"
+      STORAGE_TABLE: "public.__undertaker"
+      # The initialization scripts create a "test" schema
+      TEST_STORAGE_DSN: "postgres://undertaker:undertaker@postgres/undertaker?sslmode=disable"
+
+    image: golang:1.14-stretch
+    command: sh -c "go test $$(go list ./...)"
+    working_dir: /app
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_PASSWORD: undertaker
+      POSTGRES_USER: undertaker
+      POSTGRES_DB: undertaker
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "undertaker", "-U", "undertaker" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    volumes:
+    - ./docker/postgres:/docker-entrypoint-initdb.d

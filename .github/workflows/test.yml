@@ -11,16 +11,12 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      TEST_STORAGE_DSN: "postgres://undertaker:undertaker@localhost:12345/undertaker?sslmode=disable"
+
     steps:
-
-    - name: Set up Go 1.x
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.14
-      id: go
-
-    - name: Check out code into the Go module directory
+    - name: Check out code
       uses: actions/checkout@v2
 
-    - name: Test
-      run: go test -v $(go list ./...)
+    - name: Run tests
+      run: docker-compose -f docker-compose.ci.yaml up --exit-code-from undertaker
