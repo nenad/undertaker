@@ -50,5 +50,5 @@ func (u *Undertaker) Collect() ([]string, error) {
 		return nil, fmt.Errorf("could not read bytes from tombs: %w", err)
 	}
 
-	return strings.Split(string(b), "\n"), nil
+	return strings.Split(strings.TrimSpace(string(b)), "\n"), nil
 }

@@ -86,7 +86,7 @@ func TestUndertaker_Collect(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		_, _ = c.Write([]byte("hello\nworld"))
+		_, _ = c.Write([]byte("hello\nworld\n"))
 		_ = c.Close()
 	}()
 
