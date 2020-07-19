@@ -87,7 +87,5 @@ Undertaker\Dummy\Model\InhabitableInterface::exteriorType
 
 ## Future work
 
-- Collect functions over time in a persistence engine
-- Integration tests
 - Detect files which might have side effects when loaded
 - Running in production...
